@@ -16,6 +16,5 @@ module "GET_index" {
   rest_api_id        = "${var.rest_api_id}"
   parent_resource_id = "${var.root_resource_id}"
   http_method        = "GET"
-  path_part          = ""
   source_dir         = "${local.src}/index/get"
 }

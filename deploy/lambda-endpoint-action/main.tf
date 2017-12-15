@@ -1,11 +1,11 @@
 variable "app_name" {}
 variable "stage" {}
 variable "http_method" {}
-variable "path_part" {}
 variable "source_dir" {}
 variable "lambda_role_arn" {}
 variable "rest_api_id" {}
 variable "parent_resource_id" {}
+variable "path_part" { default = "" }
 
 locals {
   long_name          = "${var.app_name}-${var.http_method}-${md5("${var.path_part}")}"
