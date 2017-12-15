@@ -13,7 +13,7 @@ module.exports.handler = (event, context, callback) => {
 <html>
   <body>
     <h3>URL ${submitted} has been shortened:
-        <a href="https://${prefix}/fake">${prefix}/fake</a>
+        <a href="${prefix}/fake">${prefix}/fake</a>
     </h3>
   </body>
 </html>`,
