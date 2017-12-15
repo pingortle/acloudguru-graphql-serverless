@@ -1,9 +1,14 @@
 locals {
   output_path            = "${path.module}/tmp/source.zip"
   should_create_resource = "${length(var.path_part) > 0}"
-  null_resource_ids      = [""]
-  created_resource_ids   = "${coalescelist(aws_api_gateway_resource.Resource.*.id, local.null_resource_ids)}"
+  created_resource_ids   = "${coalescelist(aws_api_gateway_resource.Resource.*.id, list(""))}"
   resource_id            = "${local.should_create_resource ? local.created_resource_ids[0] : var.parent_resource_id}"
+  pattern                = "/[^{]*\\{(\\w+)\\}[^{]*/"
+  replacement            = "$1,"
+  # delimiter              = ","
+  path_parameters        = "${compact(split(",", replace(var.path_part, local.pattern, local.replacement)))}"
+  request_parameter_keys = "${formatlist("method.request.path.%s", local.path_parameters)}"
+  request_parameter_values = "${slice(split(",", replace(join(",", local.request_parameter_keys), "/[^,]+/", "true")), 0, length(local.request_parameter_keys))}"
 }
 
 resource "aws_api_gateway_resource" "Resource" {
@@ -18,6 +23,8 @@ resource "aws_api_gateway_method" "Method" {
   resource_id   = "${local.resource_id}"
   http_method   = "${var.http_method}"
   authorization = "NONE"
+
+  request_parameters = "${zipmap(local.request_parameter_keys, local.request_parameter_values)}"
 }
 
 resource "aws_api_gateway_integration" "Integration" {
