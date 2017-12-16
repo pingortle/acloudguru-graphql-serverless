@@ -41,7 +41,8 @@ resource "aws_lambda_function" "API" {
 
   environment {
     variables = {
-      NODE_ENV = "production"
+      NODE_ENV  = "production"
+      APP_STAGE = "${var.stage}"
     }
   }
 }

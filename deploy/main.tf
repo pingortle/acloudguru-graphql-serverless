@@ -39,5 +39,10 @@ resource "aws_api_gateway_deployment" "Deployment" {
 
 module "lambda_role" {
   source = "./basic-lambda-role"
-  name = "${local.app_name}Role"
+  name   = "${local.app_name}Role"
+}
+
+module "staging_slug_table" {
+  source = "./slug-table"
+  stage = "staging"
 }
