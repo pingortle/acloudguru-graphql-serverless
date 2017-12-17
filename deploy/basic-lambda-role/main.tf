@@ -40,7 +40,8 @@ resource "aws_iam_policy" "lambda_policy" {
         "logs:CreateLogGroup",
         "logs:CreateLogStream",
         "logs:PutLogEvents",
-        "dynamodb:GetItem"
+        "dynamodb:GetItem",
+        "dynamodb:PutItem"
       ],
       "Resource": "*"
     }

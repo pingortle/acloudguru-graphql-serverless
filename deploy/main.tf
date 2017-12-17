@@ -14,6 +14,15 @@ locals {
   source_dir   = "${local.project_root}/src"
 }
 
+data "aws_route53_zone" "selected" {
+  name = "lape.pw."
+}
+
+data "aws_acm_certificate" "selected" {
+  domain   = "l.lape.pw"
+  statuses = ["ISSUED"]
+}
+
 module "api" {
   source     = "./lambda-api"
   app_name   = "${local.app_name}"
@@ -45,4 +54,28 @@ module "lambda_role" {
 module "staging_slug_table" {
   source = "./slug-table"
   stage = "staging"
+}
+
+resource "aws_route53_record" "staging" {
+  zone_id = "${data.aws_route53_zone.selected.id}"
+
+  name = "${aws_api_gateway_domain_name.staging.domain_name}"
+  type = "A"
+
+  alias {
+    name                   = "${aws_api_gateway_domain_name.staging.cloudfront_domain_name}"
+    zone_id                = "${aws_api_gateway_domain_name.staging.cloudfront_zone_id}"
+    evaluate_target_health = true
+  }
+}
+
+resource "aws_api_gateway_domain_name" "staging" {
+  domain_name     = "l.lape.pw"
+  certificate_arn = "${data.aws_acm_certificate.selected.arn}"
+}
+
+resource "aws_api_gateway_base_path_mapping" "staging" {
+  api_id      = "${module.api.rest_api_id}"
+  stage_name  = "${aws_api_gateway_deployment.Deployment.stage_name}"
+  domain_name = "${aws_api_gateway_domain_name.staging.domain_name}"
 }
