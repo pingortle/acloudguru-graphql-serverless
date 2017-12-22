@@ -5,7 +5,6 @@ locals {
   resource_id            = "${local.should_create_resource ? local.created_resource_ids[0] : var.parent_resource_id}"
   pattern                = "/[^{]*\\{(\\w+)\\}[^{]*/"
   replacement            = "$1,"
-  # delimiter              = ","
   path_parameters        = "${compact(split(",", replace(var.path_part, local.pattern, local.replacement)))}"
   request_parameter_keys = "${formatlist("method.request.path.%s", local.path_parameters)}"
   request_parameter_values = "${slice(split(",", replace(join(",", local.request_parameter_keys), "/[^,]+/", "true")), 0, length(local.request_parameter_keys))}"
