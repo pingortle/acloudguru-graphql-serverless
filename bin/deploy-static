@@ -1,5 +1,8 @@
 #!/bin/bash
 
+bin/build
+
+DESTINATION_DIR=${DESTINATION_DIR:-tmp/dist}
 TERRAFORM_ENV_FILE=${TERRAFORM_ENV_FILE:-.terraform_env}
 
 if test -f $TERRAFORM_ENV_FILE
@@ -7,10 +10,12 @@ then
   source $TERRAFORM_ENV_FILE
 fi
 
+BUCKET=`bin/terraform output -json static_site_bucket | docker run -i stedolan/jq --raw-output .value`
+
 docker run -it \
   -e AWS_ACCESS_KEY_ID \
   -e AWS_SECRET_ACCESS_KEY \
   -e AWS_REGION \
   -v $PWD:/workspace \
   -w /workspace \
-  cgswong/aws:aws s3 sync ./src/static s3://$1 --delete
+  cgswong/aws:aws s3 sync $DESTINATION_DIR s3://$BUCKET --delete

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+SOURCE_DIR=src/static
+DESTINATION_DIR=${DESTINATION_DIR:-tmp/dist}
+
+cp -r $SOURCE_DIR/ $DESTINATION_DIR
+
+mkdir -p $DESTINATION_DIR || true
+mkdir $DESTINATION_DIR/js || true
+mkdir $DESTINATION_DIR/css || true
+mkdir $DESTINATION_DIR/aws-sdks || true
+
+curl -s https://raw.githubusercontent.com/aws/amazon-cognito-identity-js/v1.16.0/dist/amazon-cognito-identity.min.js -o $DESTINATION_DIR/aws-sdks/amazon-cognito-identity.v1.16.0.min.js
+curl -s https://raw.githubusercontent.com/aws/amazon-cognito-identity-js/v1.16.0/dist/aws-cognito-sdk.min.js -o $DESTINATION_DIR/aws-sdks/amazon-cognito-sdk.v1.16.0.min.js
+curl -s https://raw.githubusercontent.com/aws/aws-sdk-js/v2.36.0/dist/aws-sdk.min.js -o $DESTINATION_DIR/aws-sdks/aws-sdk.v2.36.0.min.js
+curl -s https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js -o $DESTINATION_DIR/js/jquery-1.12.4.min.js
+curl -s https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js -o $DESTINATION_DIR/js/bootstrap-3.3.7.min.js
+curl -s https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css -o $DESTINATION_DIR/css/bootstrap-3.3.7.min.css
+curl -s https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css -o $DESTINATION_DIR/css/bootstrap-theme-3.3.7.min.css
