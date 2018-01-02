@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -6,10 +6,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/css/bootstrap-3.3.7.min.css">
     <link rel="stylesheet" href="/css/bootstrap-theme-3.3.7.min.css">
-    <!-- <link rel="stylesheet" href="/css/site.css"> -->
+    <link rel="stylesheet" href="/css/site.css">
     <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAADw8PAA7k8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIiEAAAAAAAACIhAAAAAAAAIiIQAAAAAAACIiEAAAAAAAAiIhAAAAAAAAIiIQAAAAAAACIiEAAAAAAAAiIhAAAAARERIiIQAAACIiIiIiEAAAAiIiIiIhAAAAIiIQAAAAAAACIiEAAAAAAAAiIhAAAAAAAAIiIQAAAAAAACIiEAAP/wAAh/8AAIP/AADB/wAA4P8AAPB/AAD4PwAA/B8AAMAPAADABwAA4AMAAPB/AAD4PwAA/B8AAP4PAAD/BwAA" rel="icon" type="image/x-icon" />
   </head>
   <body>
+    <nav class="navbar navbar-default navbar-inverse" role="navigation">
+      <div class="container-fluid">
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li class="authenticated"><a href="/">My Posts</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <!-- Greet the user by name, if they're logged in -->
+            <li class="authenticated">
+              <p class="navbar-text">
+              Hi
+              <span id="current-user-name">you!</span>
+              <a id="buttonLogout">Log me out</a>
+              </p>
+            </li>
+            <!-- anon-only blocks are just for users without a token -->
+            <li><p class="navbar-text anon-only">Got an account?</p></li>
+            <li class="dropdown anon-only">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Log In</b><span class="caret"></span></a>
+              <ul id="login-dp" class="dropdown-menu">
+                <li>
+                  <div class="row">
+                    <div class="col-md-12" style="padding-left: 20px; padding-right: 20px">
+                      <form class="form" role="form" action="" id="login-nav">
+                        <div class="form-group">
+                          <label class="sr-only" for="username">Username</label>
+                          <input class="form-control" id="username" placeholder="Username" required>
+                        </div>
+                        <div class="form-group">
+                          <label class="sr-only" for="password">Password</label>
+                          <input type="password" class="form-control" id="password" placeholder="Password" required>
+                        </div>
+                        <div class="form-group">
+                          <button type="button" id="buttonLogin" class="btn btn-primary btn-block">Sign in</button>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="bottom text-center">
+                      New here? <a href="/signup.html"><b>Join Us</b></a>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
     <div class="container" role="main">
       <h1>Hello Serverless Fans!</h1>
     </div>
@@ -17,5 +67,8 @@
     <script src="/js/bootstrap-3.3.7.min.js"></script>
     <script src="/aws-sdks/amazon-cognito-sdk.v1.16.0.min.js"></script>
     <script src="/aws-sdks/amazon-cognito-identity.v1.16.0.min.js"></script>
+    <script src="/js/cognito-utils.js"></script>
+    <script src="/js/config.js"></script>
+    <script src="/js/login.js"></script>
   </body>
 </html>

@@ -11,6 +11,7 @@ then
 fi
 
 BUCKET=`bin/terraform output -json static_site_bucket | docker run -i stedolan/jq --raw-output .value`
+AWS_CLOUDFRONT_DISTRIBUTION_ID=`bin/terraform output -json cloudfront_distribution_id | docker run -i stedolan/jq --raw-output .value`
 
 docker run -it \
   -e AWS_ACCESS_KEY_ID \
@@ -19,3 +20,11 @@ docker run -it \
   -v $PWD:/workspace \
   -w /workspace \
   cgswong/aws:aws s3 sync $DESTINATION_DIR s3://$BUCKET --delete
+
+docker run -it \
+  -e AWS_ACCESS_KEY_ID \
+  -e AWS_SECRET_ACCESS_KEY \
+  -e AWS_REGION \
+  -v $PWD:/workspace \
+  -w /workspace \
+  cgswong/aws:aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths /index.html /js/config.js
