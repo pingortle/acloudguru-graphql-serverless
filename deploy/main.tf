@@ -23,6 +23,11 @@ data "aws_acm_certificate" "selected" {
   statuses = ["ISSUED"]
 }
 
+data "aws_acm_certificate" "root" {
+  domain   = "lape.pw"
+  statuses = ["ISSUED"]
+}
+
 module "api" {
   source     = "./lambda-api"
   app_name   = "${local.app_name}"
@@ -54,6 +59,12 @@ module "lambda_role" {
 module "staging_slug_table" {
   source = "./slug-table"
   stage = "staging"
+}
+
+module "static_site" {
+  source                  = "./cdn"
+  certificate_arn         = "${data.aws_acm_certificate.root.arn}"
+  domain_name            = "linksocial.lape.pw"
 }
 
 resource "aws_route53_record" "staging" {

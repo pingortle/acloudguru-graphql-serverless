@@ -1,0 +1,5 @@
+#!/bin/bash
+
+bin/terraform init && bin/terraform apply -auto-approve
+BUCKET=`bin/terraform output -json static_site_bucket | docker run -i stedolan/jq --raw-output .value`
+bin/deploy-static "$BUCKET"
