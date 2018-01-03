@@ -4,7 +4,8 @@ Code for the [acloud.guru](https://acloud.guru) GraphQL and Serverless course, t
 
 ## Setup
 
-- (Optional) Add your credentials in `./.terraform_env`:
+- Get [Docker](https://www.docker.com/get-docker)
+- Add your credentials in `./.terraform_env` (or just export them in your shell):
 ```
 export AWS_ACCESS_KEY_ID=MY_KEY_ID
 export AWS_SECRET_ACCESS_KEY=MY_SECRET
