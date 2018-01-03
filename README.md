@@ -1,6 +1,6 @@
 # A Cloud Guru - The Serverless Framework with GraphQL
 
-Code for the [acloud.guru](https://acloud.guru) GraphQL and Serverless course. Translated to use [Terraform](https://www.terraform.io) instead of [Serverless](https://serverless.com).
+Code for the [acloud.guru](https://acloud.guru) GraphQL and Serverless course, translated to use [Terraform](https://www.terraform.io) instead of [Serverless](https://serverless.com).
 
 ## Setup
 
