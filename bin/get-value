@@ -1,0 +1,3 @@
+#!/bin/bash
+
+bin/terraform output -json $1 | docker run -i stedolan/jq --raw-output .value

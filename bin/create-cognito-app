@@ -1,0 +1,6 @@
+#!/bin/bash
+
+bin/aws cognito-idp create-user-pool-client \
+  --user-pool-id `bin/get-value user_pool_id` \
+  --client-name $1 \
+  --no-generate-secret

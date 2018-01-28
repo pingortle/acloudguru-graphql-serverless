@@ -1,30 +1,14 @@
 #!/bin/bash
 
+set -eux
+
+bin/clean
 bin/build
 
 DESTINATION_DIR=${DESTINATION_DIR:-tmp/dist}
-TERRAFORM_ENV_FILE=${TERRAFORM_ENV_FILE:-.terraform_env}
 
-if test -f $TERRAFORM_ENV_FILE
-then
-  source $TERRAFORM_ENV_FILE
-fi
+BUCKET=`bin/get-value static_site_bucket`
+AWS_CLOUDFRONT_DISTRIBUTION_ID=`bin/get-value cloudfront_distribution_id`
 
-BUCKET=`bin/terraform output -json static_site_bucket | docker run -i stedolan/jq --raw-output .value`
-AWS_CLOUDFRONT_DISTRIBUTION_ID=`bin/terraform output -json cloudfront_distribution_id | docker run -i stedolan/jq --raw-output .value`
-
-docker run -it \
-  -e AWS_ACCESS_KEY_ID \
-  -e AWS_SECRET_ACCESS_KEY \
-  -e AWS_REGION \
-  -v $PWD:/workspace \
-  -w /workspace \
-  cgswong/aws:aws s3 sync $DESTINATION_DIR s3://$BUCKET --delete
-
-docker run -it \
-  -e AWS_ACCESS_KEY_ID \
-  -e AWS_SECRET_ACCESS_KEY \
-  -e AWS_REGION \
-  -v $PWD:/workspace \
-  -w /workspace \
-  cgswong/aws:aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths /index.html /js/config.js
+bin/aws s3 sync $DESTINATION_DIR s3://$BUCKET --delete
+bin/aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths /index.html /js/config.js

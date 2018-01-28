@@ -1,14 +1,16 @@
 #!/bin/bash
 
+set -eux
+
 SOURCE_DIR=src/static
 DESTINATION_DIR=${DESTINATION_DIR:-tmp/dist}
-
-cp -r $SOURCE_DIR/ $DESTINATION_DIR
 
 mkdir -p $DESTINATION_DIR || true
 mkdir $DESTINATION_DIR/js || true
 mkdir $DESTINATION_DIR/css || true
 mkdir $DESTINATION_DIR/aws-sdks || true
+
+cp -r $SOURCE_DIR/ $DESTINATION_DIR
 
 curl -s https://raw.githubusercontent.com/aws/amazon-cognito-identity-js/v1.16.0/dist/amazon-cognito-identity.min.js -o $DESTINATION_DIR/aws-sdks/amazon-cognito-identity.v1.16.0.min.js
 curl -s https://raw.githubusercontent.com/aws/amazon-cognito-identity-js/v1.16.0/dist/aws-cognito-sdk.min.js -o $DESTINATION_DIR/aws-sdks/amazon-cognito-sdk.v1.16.0.min.js

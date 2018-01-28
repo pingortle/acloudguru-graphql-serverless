@@ -1,0 +1,17 @@
+#!/bin/bash
+
+TERRAFORM_ENV_FILE=${TERRAFORM_ENV_FILE:-.terraform_env}
+
+if test -f $TERRAFORM_ENV_FILE
+then
+  source $TERRAFORM_ENV_FILE
+fi
+
+docker run -it \
+  -e AWS_ACCESS_KEY_ID \
+  -e AWS_SECRET_ACCESS_KEY \
+  -e AWS_REGION \
+  -e AWS_DEFAULT_REGION=$AWS_REGION \
+  -v $PWD:/workspace \
+  -w /workspace \
+  cgswong/aws:aws $@
