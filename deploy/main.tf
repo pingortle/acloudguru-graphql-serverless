@@ -67,6 +67,10 @@ module "static_site" {
   domain_name            = "linksocial.lape.pw"
 }
 
+module "auth" {
+  source = "./auth"
+}
+
 resource "aws_route53_record" "staging" {
   zone_id = "${data.aws_route53_zone.selected.id}"
 

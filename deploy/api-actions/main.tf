@@ -5,7 +5,7 @@ variable "rest_api_id" {}
 variable "root_resource_id" {}
 
 locals {
-  src = "${path.root}/../src"
+  src = "${path.root}/../src/api"
 }
 
 module "index" {
@@ -40,4 +40,16 @@ module "redirect" {
   http_method        = "GET"
   path_part          = "{slug}"
   source_dir         = "${local.src}/redirect"
+}
+
+module "test_auth" {
+  source             = "../lambda-endpoint-action"
+  stage              = "${var.stage}"
+  app_name           = "${var.app_name}"
+  lambda_role_arn    = "${var.lambda_role_arn}"
+  rest_api_id        = "${var.rest_api_id}"
+  parent_resource_id = "${var.root_resource_id}"
+  http_method        = "GET"
+  path_part          = "test_auth"
+  source_dir         = "${local.src}/test_auth"
 }
