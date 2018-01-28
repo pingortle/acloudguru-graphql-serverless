@@ -25,10 +25,13 @@ module.exports.handler = (event, context, callback) => {
   console.log(JSON.stringify(event))
 
   const submitted = querystring.parse(event.body).link
+  const options = querystring.parse(event.body)
   const prefix = event.headers.Referer || 'http://mysite.com/'
 
   console.log('URL submitted: ' + submitted)
   return new Promise((resolve, reject) => {
+    if (options.slug) return resolve(options.slug)
+
     resolve(crypto.randomBytes(8)
                    .toString('base64')
                    .replace(/[=+/]/g, '')
